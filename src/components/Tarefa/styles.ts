@@ -1,11 +1,42 @@
 import styled from 'styled-components';
+import vars from '../../styles/vars';
+import { Prioridade, Status } from '../../utils/enums/Tarefa';
+import { Botao } from '../../styles';
+
+type TagProps = {
+  prioridade?: Prioridade;
+  status?: Status;
+  parametro: 'status' | 'prioridade';
+};
+
+const getCorDeFundo: (props: TagProps) => string = (props) => {
+  if (props.parametro === 'prioridade') {
+    if (props.prioridade === Prioridade.URGENTE) return vars.vermelho;
+    if (props.prioridade === Prioridade.IMPORTANTE) return vars.amareloOuro;
+  } else {
+    if (props.status === Status.PENDENTE) return vars.amarelo;
+    if (props.status === Status.CONCLUIDA) return vars.verde;
+  }
+
+  return '#ccc';
+};
 
 export const Card = styled.div`
   background-color: #fcfcfc;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
   padding: 16px;
   margin-bottom: 32px;
   border-radius: 16px;
+
+  input {
+    margin-bottom: 16px;
+    margin-right: 12px;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 export const Titulo = styled.h3`
@@ -14,12 +45,12 @@ export const Titulo = styled.h3`
   margin-bottom: 16px;
 `;
 
-export const Tag = styled.span`
+export const Tag = styled.span<TagProps>`
   padding: 4px 8px;
   font-weight: 700;
   font-size: 10px;
   color: #fff;
-  background-color: #e1a32a;
+  background-color: ${(props) => getCorDeFundo(props)};
   border-radius: 8px;
   margin-right: 16px;
   display: inline-block;
@@ -44,14 +75,6 @@ export const BarraAcoes = styled.div`
   padding-top: 16px;
 `;
 
-export const Botao = styled.button`
-  font-weight: 700;
-  font-size: 12px;
-  color: #fff;
-  padding: 8px 12px;
-  border: none;
-  cursor: pointer;
-  background-color: #2f3640;
-  border-radius: 8px;
-  margin-right: 8px;
+export const BotaoCancelarERemover = styled(Botao)`
+  background-color: ${vars.vermelho};
 `;
